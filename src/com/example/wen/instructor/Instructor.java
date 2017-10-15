@@ -1,5 +1,7 @@
 package com.example.wen.instructor;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -23,9 +26,22 @@ public class Instructor {
 	private String lastName;
 	@Column (name = "email")
 	private String email;
+	
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "instructor_detail_id")
 	private InstructorDetail instructorDetail;
+	
+	//mappedby refer to instructor property in the course class
+	@OneToMany(mappedBy = "instructor",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	private List<Course> courses;
+	
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
 	
 	public Instructor(){}
 
