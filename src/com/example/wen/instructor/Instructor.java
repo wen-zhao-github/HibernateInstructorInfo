@@ -1,10 +1,12 @@
 package com.example.wen.instructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +34,7 @@ public class Instructor {
 	private InstructorDetail instructorDetail;
 	
 	//mappedby refer to instructor property in the course class
-	@OneToMany(mappedBy = "instructor",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "instructor",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	private List<Course> courses;
 	
 	public List<Course> getCourses() {
@@ -116,6 +118,11 @@ public class Instructor {
 		return "Instructor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", instructorDetail=" + instructorDetail + "]";
 	}
-	
+	public void addCourse(Course cous){
+		if (courses == null){
+			courses = new ArrayList<>();
+		}
+		courses.add(cous);
+	}
 
 }

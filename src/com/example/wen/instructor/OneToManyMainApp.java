@@ -19,10 +19,12 @@ public class OneToManyMainApp {
 		Course javaCourse = new Course("java advanced");
 		Course cplus = new Course("c++ advanced");
 		List<Course> courses = new ArrayList<>();
+		//direction: from course to instructor
 		javaCourse.setInstructor(instructor);
 		cplus.setInstructor(instructor);
 		courses.add(javaCourse);
-		courses.add(cplus);        
+		courses.add(cplus);     
+		//direction: from instructor to courses list
 		instructor.setCourses(courses);
 		
 	    try{
