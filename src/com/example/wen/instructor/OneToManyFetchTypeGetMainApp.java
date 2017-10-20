@@ -22,12 +22,20 @@ public class OneToManyFetchTypeGetMainApp {
 	    	int id = 7;
 	    	Instructor instru = session.get(Instructor.class, id);
 	    	System.out.println("main app >> "+instru);
+	    	//one to one, by default eager fetch type no error
+	    	System.out.println("main app >> "+instru.getInstructorDetail());
+	    	//one to many, lazy, session closed, error
 	    	System.out.println("main app >> "+instru.getCourses());
+	    	List<Course> courses = instru.getCourses();
+	    	for (Course temp:courses){
+	    		temp.setInstructor(null);
+	    	}
+	    	session.delete(instru);
 	    	
 	    	
 	    	session.getTransaction().commit();
-	    	
-	    	System.out.println("main app >> "+instru.getInstructorDetail());
+	    	session.close();
+
 	   }catch (Exception e){
 		   e.printStackTrace();
 	   }finally{
