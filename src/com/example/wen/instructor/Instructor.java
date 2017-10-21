@@ -34,8 +34,10 @@ public class Instructor {
 	private InstructorDetail instructorDetail;
 	
 	//mappedby refer to instructor property in the course class
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "instructor",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "instructor",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	private List<Course> courses;
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="instructor",cascade=CascadeType.ALL)
+	private List<Review> reviews;
 	
 	public List<Course> getCourses() {
 		return courses;
@@ -123,6 +125,20 @@ public class Instructor {
 			courses = new ArrayList<>();
 		}
 		courses.add(cous);
+	}
+	public void addReview(Review review){
+		if (reviews == null){
+			reviews = new ArrayList<>();
+		}
+		reviews.add(review);
+	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 }
