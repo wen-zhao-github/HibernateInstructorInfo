@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -34,11 +36,27 @@ public class Instructor {
 	private InstructorDetail instructorDetail;
 	
 	//mappedby refer to instructor property in the course class
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "instructor",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	//Duplicate entry '12-7' for key 'PRIMARY'
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "instructor",cascade = CascadeType.ALL)
 	private List<Course> courses;
 	@OneToMany(fetch=FetchType.EAGER,mappedBy="instructor",cascade=CascadeType.ALL)
 	private List<Review> reviews;
 	
+	@ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@JoinTable( name = "instructor_student",
+			joinColumns = @JoinColumn(name = "instructor_id"),
+	        inverseJoinColumns = @JoinColumn(name = "student_id")
+			)
+	private List<Student> students;
+	
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
+	}
+
 	public List<Course> getCourses() {
 		return courses;
 	}
@@ -142,6 +160,21 @@ public class Instructor {
 
 	public void setReviews(List<Review> reviews) {
 		this.reviews = reviews;
+	}
+	public void addStudent(Student s){
+		if (students == null){
+			students = new ArrayList<>();
+		}
+		students.add(s);
+	}
+	public void deleteStudent(Student s){
+		try{
+			students.remove(s);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("this is no such student in db!");
+		}
 	}
 
 }
