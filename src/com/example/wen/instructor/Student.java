@@ -26,7 +26,7 @@ public class Student {
 	@Column(name="last_name")
 	private String lastName;
 	// {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinTable( name = "instructor_student",
 			joinColumns = @JoinColumn(name = "student_id"),
 	        inverseJoinColumns = @JoinColumn(name = "instructor_id")
