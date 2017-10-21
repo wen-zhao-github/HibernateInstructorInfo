@@ -132,6 +132,9 @@ public class Instructor {
 		}
 		reviews.add(review);
 	}
+	public void deleteReview(Review review){
+		reviews.remove(review);
+	}
 
 	public List<Review> getReviews() {
 		return reviews;
